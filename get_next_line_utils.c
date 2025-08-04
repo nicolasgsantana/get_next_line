@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 10:04:42 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/08/04 12:56:02 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:08:25 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,28 @@ char	*ft_strdup(const char *s)
 	}
 	cpy_str[i] = '\0';
 	return (cpy_str);
+}
+
+char	*get_first_line(const char *s)
+{
+	char	*line;
+	int		line_size;
+	int		i;
+
+	line_size = 0;
+	while (s[line_size] && s[line_size] != '\n')
+		line_size++;
+	if (s[line_size] == '\n')
+		line_size++;
+	line = malloc((line_size + 1) * sizeof(char));
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (i < line_size)
+	{
+		line[i] = s[i];
+		i++;
+	}
+	line[i] = '\0';
+	return (line);
 }
