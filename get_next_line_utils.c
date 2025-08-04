@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 10:04:42 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/08/04 11:27:49 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/08/04 12:56:02 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,21 @@ void	*ft_memchr(const void *s, int c, size_t n)
 		i++;
 	}
 	return (NULL);
+}
+char	*ft_strdup(const char *s)
+{
+	char	*cpy_str;
+	int		i;
+
+	cpy_str = malloc((ft_strlen(s) + 1) * sizeof(char));
+	if (!cpy_str)
+		return (NULL);
+	i = 0;
+	while (s[i])
+	{
+		cpy_str[i] = s[i];
+		i++;
+	}
+	cpy_str[i] = '\0';
+	return (cpy_str);
 }
