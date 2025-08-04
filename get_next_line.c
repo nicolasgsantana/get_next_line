@@ -3,16 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nicolas <nicolas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:47:08 by nicolas           #+#    #+#             */
-/*   Updated: 2025/08/01 15:26:14 by nicolas          ###   ########.fr       */
+/*   Updated: 2025/08/04 11:50:22 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
+	static char	*line;
+	char		buf_str[BUFFER_SIZE];
+	char		*temp;
 
+	if (!line)
+		line = malloc(sizeof(char));
+	while (read(fd, &buf_str, BUFFER_SIZE) > 0)
+	{
+		temp = line;
+		line = ft_strjoin(temp, buf_str);
+		free(temp);
+		if (ft_memchr(buf_str, '\n', BUFFER_SIZE))
+			break ;
+	}
+	return (line);
 }
