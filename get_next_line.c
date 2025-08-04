@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:47:08 by nicolas           #+#    #+#             */
-/*   Updated: 2025/08/04 11:50:22 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/08/04 12:51:50 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ char	*get_next_line(int fd)
 
 	if (!line)
 		line = malloc(sizeof(char));
+	else
+	{
+		temp = line;
+		line = ft_strdup((char *)ft_memchr(temp, '\n', ft_strlen(temp)) + 1);
+		free(temp);
+	}
 	while (read(fd, &buf_str, BUFFER_SIZE) > 0)
 	{
 		temp = line;
