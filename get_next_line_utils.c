@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 10:04:42 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/08/04 14:08:25 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/08/05 16:12:50 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	str[i] = '\0';
 	return (str);
 }
+
 void	*ft_memchr(const void *s, int c, size_t n)
 {
 	const unsigned char	*src;
@@ -65,6 +66,7 @@ void	*ft_memchr(const void *s, int c, size_t n)
 	}
 	return (NULL);
 }
+
 char	*ft_strdup(const char *s)
 {
 	char	*cpy_str;
@@ -83,26 +85,29 @@ char	*ft_strdup(const char *s)
 	return (cpy_str);
 }
 
-char	*get_first_line(const char *s)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*line;
-	int		line_size;
-	int		i;
+	char	*substr;
+	size_t	i;
+	size_t	s_len;
+	size_t	new_len;
 
-	line_size = 0;
-	while (s[line_size] && s[line_size] != '\n')
-		line_size++;
-	if (s[line_size] == '\n')
-		line_size++;
-	line = malloc((line_size + 1) * sizeof(char));
-	if (!line)
-		return (NULL);
+	s_len = ft_strlen(s);
+	if (start > s_len)
+		new_len = 0;
+	else
+		new_len = s_len - start;
+	if (len > new_len)
+		len = new_len;
 	i = 0;
-	while (i < line_size)
+	substr = malloc((len + 1) * sizeof(char));
+	if (!substr)
+		return (0);
+	while (i < len)
 	{
-		line[i] = s[i];
+		substr[i] = s[start + i];
 		i++;
 	}
-	line[i] = '\0';
-	return (line);
+	substr[i] = '\0';
+	return (substr);
 }
