@@ -6,11 +6,35 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:47:08 by nicolas           #+#    #+#             */
-/*   Updated: 2025/08/05 13:51:15 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/08/05 16:06:17 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+static char	*get_first_line(const char *s)
+{
+	char	*line;
+	int		line_size;
+	int		i;
+
+	line_size = 0;
+	while (s[line_size] && s[line_size] != '\n')
+		line_size++;
+	if (s[line_size] == '\n')
+		line_size++;
+	line = malloc((line_size + 1) * sizeof(char));
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (i < line_size)
+	{
+		line[i] = s[i];
+		i++;
+	}
+	line[i] = '\0';
+	return (line);
+}
 
 char	*get_next_line(int fd)
 {
