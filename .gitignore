@@ -1,3 +1,5 @@
 *.txt
 main.c
 *.out
+.vscode
+tests
