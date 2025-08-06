@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:47:08 by nicolas           #+#    #+#             */
-/*   Updated: 2025/08/06 16:35:05 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/08/06 18:43:16 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,22 @@ char	*get_next_line(int fd)
 {
 	static char	*stack;
 	char		*temp;
-	char		*new_line;
+	char		*new_line_pos;
 
 	if (!stack)
 		stack = ft_strdup("");
-	new_line = ft_strchr(stack, '\n');
-	if (new_line)
+	new_line_pos = ft_strchr(stack, '\n');
+	if (new_line_pos)
 	{
 		temp = stack;
-		stack = ft_strdup(new_line + 1);
+		stack = ft_strdup(new_line_pos + 1);
 		free(temp);
 	}
-	else if (!new_line && ft_strlen(stack) > 0)
+	else if (!new_line_pos && ft_strlen(stack) > 0)
 	{
 		temp = get_first_line(stack);
 		free(stack);
+		stack = NULL;
 		return (temp);
 	}
 	read_until_nl(fd, &stack);
