@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:47:08 by nicolas           #+#    #+#             */
-/*   Updated: 2025/08/06 12:28:45 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/08/06 16:35:05 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,36 @@ static char	*get_first_line(const char *s)
 	return (ft_substr(s, 0, line_len));
 }
 
+static ssize_t	read_until_nl(int fd, char **stack)
+{
+	ssize_t	bytes_read;
+	char	*temp;
+	char	*buffer;
+
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buffer)
+		return (0);
+	bytes_read = read(fd, buffer, BUFFER_SIZE);
+	while (bytes_read > 0)
+	{
+		buffer[bytes_read] = '\0';
+		temp = *stack;
+		*stack = ft_strjoin(temp, buffer);
+		free(temp);
+		if (ft_strchr(buffer, '\n'))
+			break ;
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+	}
+	free(buffer);
+	return (bytes_read);
+}
+
 char	*get_next_line(int fd)
 {
 	static char	*stack;
 	char		*temp;
-	char		*buffer;
 	char		*new_line;
-	ssize_t		bytes_read;
-	
-	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buffer)
-		return(NULL);
-	bytes_read = read(fd, buffer, BUFFER_SIZE);
+
 	if (!stack)
 		stack = ft_strdup("");
 	new_line = ft_strchr(stack, '\n');
@@ -45,16 +63,12 @@ char	*get_next_line(int fd)
 		stack = ft_strdup(new_line + 1);
 		free(temp);
 	}
-	while (bytes_read > 0)
+	else if (!new_line && ft_strlen(stack) > 0)
 	{
-		buffer[bytes_read] = '\0';
-		temp = stack;
-		stack = ft_strjoin(temp, buffer);
-		free(temp);
-		if (ft_strchr(buffer, '\n'))
-			break;
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		temp = get_first_line(stack);
+		free(stack);
+		return (temp);
 	}
-	free(buffer);
+	read_until_nl(fd, &stack);
 	return (get_first_line(stack));
 }
