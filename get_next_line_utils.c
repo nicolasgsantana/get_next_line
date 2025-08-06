@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 10:04:42 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/08/05 16:12:50 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/08/06 09:53:17 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,22 +49,19 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (str);
 }
 
-void	*ft_memchr(const void *s, int c, size_t n)
+char	*ft_strchr(const char *s, int c)
 {
-	const unsigned char	*src;
-	unsigned char		to_find;
-	size_t				i;
+	int				i;
+	unsigned char	to_find;
 
-	src = s;
-	to_find = (unsigned char)c;
+	to_find = c;
 	i = 0;
-	while (i < n)
-	{
-		if (src[i] == to_find)
-			return ((unsigned char *)&src[i]);
+	while (s[i] != to_find && s[i] != '\0')
 		i++;
-	}
-	return (NULL);
+	if (s[i] == to_find)
+		return ((char *)&s[i]);
+	else
+		return (0);
 }
 
 char	*ft_strdup(const char *s)
