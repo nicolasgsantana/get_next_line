@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:47:08 by nicolas           #+#    #+#             */
-/*   Updated: 2025/08/06 18:43:16 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/08/11 14:57:19 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,16 @@ static char	*get_first_line(const char *s)
 static ssize_t	read_until_nl(int fd, char **stack)
 {
 	ssize_t	bytes_read;
+	ssize_t	total_bytes_read;
 	char	*temp;
 	char	*buffer;
 
 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (0);
+	total_bytes_read = 0;
 	bytes_read = read(fd, buffer, BUFFER_SIZE);
+	total_bytes_read += bytes_read;
 	while (bytes_read > 0)
 	{
 		buffer[bytes_read] = '\0';
@@ -43,9 +46,10 @@ static ssize_t	read_until_nl(int fd, char **stack)
 		if (ft_strchr(buffer, '\n'))
 			break ;
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		total_bytes_read += bytes_read;
 	}
 	free(buffer);
-	return (bytes_read);
+	return (total_bytes_read);
 }
 
 char	*get_next_line(int fd)
@@ -53,23 +57,25 @@ char	*get_next_line(int fd)
 	static char	*stack;
 	char		*temp;
 	char		*new_line_pos;
+	ssize_t		bytes_read;
 
 	if (!stack)
 		stack = ft_strdup("");
 	new_line_pos = ft_strchr(stack, '\n');
+	bytes_read = read_until_nl(fd, &stack);
+	if (bytes_read <= 0 && !ft_strlen(stack))
+		return (NULL);
 	if (new_line_pos)
 	{
+		new_line_pos = ft_strchr(stack, '\n');
 		temp = stack;
 		stack = ft_strdup(new_line_pos + 1);
 		free(temp);
 	}
-	else if (!new_line_pos && ft_strlen(stack) > 0)
+	else if (!new_line_pos && ft_strlen(stack) > 0 && !bytes_read)
 	{
-		temp = get_first_line(stack);
 		free(stack);
-		stack = NULL;
-		return (temp);
+		return (NULL);
 	}
-	read_until_nl(fd, &stack);
 	return (get_first_line(stack));
 }
