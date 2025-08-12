@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:47:08 by nicolas           #+#    #+#             */
-/*   Updated: 2025/08/12 15:22:58 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/08/12 15:33:29 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*get_first_line(char *s)
 	return (ft_substr(s, 0, line_len));
 }
 
-static ssize_t	read_until_nl(int fd, char **stack)
+static ssize_t	read_until_nl(int fd, char **stash)
 {
 	ssize_t	bytes_read;
 	ssize_t	total_bytes_read;
@@ -40,8 +40,8 @@ static ssize_t	read_until_nl(int fd, char **stack)
 	while (bytes_read > 0)
 	{
 		buffer[bytes_read] = '\0';
-		temp = *stack;
-		*stack = ft_strjoin(temp, buffer);
+		temp = *stash;
+		*stash = ft_strjoin(temp, buffer);
 		free(temp);
 		if (ft_strchr(buffer, '\n'))
 			break ;
@@ -52,39 +52,39 @@ static ssize_t	read_until_nl(int fd, char **stack)
 	return (total_bytes_read);
 }
 
-void	*free_stack(char **stack)
+void	*free_stack(char **stash)
 {
-	if (*stack)
+	if (*stash)
 	{
-		free(*stack);
-		*stack = NULL;
+		free(*stash);
+		*stash = NULL;
 	}
 	return (NULL);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*stack;
+	static char	*stash;
 	char		*temp;
 	char		*new_line_pos;
 	ssize_t		bytes_read;
 
-	if (!stack)
-		stack = ft_strdup("");
-	new_line_pos = ft_strchr(stack, '\n');
-	bytes_read = read_until_nl(fd, &stack);
+	if (!stash)
+		stash = ft_strdup("");
+	new_line_pos = ft_strchr(stash, '\n');
+	bytes_read = read_until_nl(fd, &stash);
 	if (new_line_pos)
 	{
-		new_line_pos = ft_strchr(stack, '\n');
-		temp = stack;
-		stack = ft_strdup(new_line_pos + 1);
+		new_line_pos = ft_strchr(stash, '\n');
+		temp = stash;
+		stash = ft_strdup(new_line_pos + 1);
 		free(temp);
 	}
 	else if (!new_line_pos && !bytes_read)
-		return (free_stack(&stack));
-	if (bytes_read == 0 && !ft_strlen(stack))
-		return (free_stack(&stack));
+		return (free_stack(&stash));
+	if (bytes_read == 0 && !ft_strlen(stash))
+		return (free_stack(&stash));
 	if (bytes_read < 0)
-		return (free_stack(&stack));
-	return (get_first_line(stack));
+		return (free_stack(&stash));
+	return (get_first_line(stash));
 }
