@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:47:08 by nicolas           #+#    #+#             */
-/*   Updated: 2025/08/11 14:57:19 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/08/12 11:22:17 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static char	*get_first_line(const char *s)
 {
 	int		line_len;
 
+	if (!ft_strlen(s))
+		return (NULL);
 	line_len = 0;
 	while (s[line_len] && s[line_len] != '\n')
 		line_len++;
