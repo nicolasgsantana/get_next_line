@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:47:08 by nicolas           #+#    #+#             */
-/*   Updated: 2025/08/12 15:33:29 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/08/12 15:35:03 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static ssize_t	read_until_nl(int fd, char **stash)
 	return (total_bytes_read);
 }
 
-void	*free_stack(char **stash)
+void	*free_stash(char **stash)
 {
 	if (*stash)
 	{
