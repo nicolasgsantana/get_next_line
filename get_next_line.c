@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:47:08 by nicolas           #+#    #+#             */
-/*   Updated: 2025/08/12 11:43:06 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/08/12 14:36:37 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,6 @@ static char	*get_first_line(char *s)
 {
 	int		line_len;
 
-	if (!ft_strlen(s))
-	{
-		free(s);
-		return (NULL);
-	}
 	line_len = 0;
 	while (s[line_len] && s[line_len] != '\n')
 		line_len++;
@@ -57,6 +52,16 @@ static ssize_t	read_until_nl(int fd, char **stack)
 	return (total_bytes_read);
 }
 
+void	*free_stack(char **stack)
+{
+	if (*stack)
+	{
+		free(*stack);
+		*stack = NULL;
+	}
+	return (NULL);
+}
+
 char	*get_next_line(int fd)
 {
 	static char	*stack;
@@ -68,8 +73,6 @@ char	*get_next_line(int fd)
 		stack = ft_strdup("");
 	new_line_pos = ft_strchr(stack, '\n');
 	bytes_read = read_until_nl(fd, &stack);
-	if (bytes_read <= 0 && !ft_strlen(stack))
-		return (NULL);
 	if (new_line_pos)
 	{
 		new_line_pos = ft_strchr(stack, '\n');
@@ -78,9 +81,8 @@ char	*get_next_line(int fd)
 		free(temp);
 	}
 	else if (!new_line_pos && ft_strlen(stack) > 0 && !bytes_read)
-	{
-		free(stack);
-		return (NULL);
-	}
+		return (free_stack(&stack));
+	if (bytes_read <= 0 && !ft_strlen(stack))
+		return (free_stack(&stack));
 	return (get_first_line(stack));
 }
