@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:47:08 by nicolas           #+#    #+#             */
-/*   Updated: 2025/08/12 15:35:03 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/08/13 09:49:20 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,10 @@ char	*get_next_line(int fd)
 		free(temp);
 	}
 	else if (!new_line_pos && !bytes_read)
-		return (free_stack(&stash));
+		return (free_stash(&stash));
 	if (bytes_read == 0 && !ft_strlen(stash))
-		return (free_stack(&stash));
+		return (free_stash(&stash));
 	if (bytes_read < 0)
-		return (free_stack(&stash));
+		return (free_stash(&stash));
 	return (get_first_line(stash));
 }
