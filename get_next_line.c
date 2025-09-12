@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nicolasgsantana <nicolasgsantana@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:47:08 by nicolas           #+#    #+#             */
-/*   Updated: 2025/08/13 09:49:20 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/09/12 11:00:28 by nicolasgsan      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static ssize_t	read_until_nl(int fd, char **stash)
 	return (total_bytes_read);
 }
 
-void	*free_stash(char **stash)
+static void	*free_stash(char **stash)
 {
 	if (*stash)
 	{
